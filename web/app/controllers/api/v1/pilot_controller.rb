@@ -10,7 +10,7 @@ class Api::V1::PilotController < Api::V1Controller
 
   def show
     @pilot = Pilot.find_by(transponder_token: params[:transponder_token])
-    if @pilot.nil?
+    if !@pilot
       render status: 404
     end
 
@@ -33,7 +33,7 @@ class Api::V1::PilotController < Api::V1Controller
 
   def deactivate
     @pilot = Pilot.find_by(transponder_token: params[:transponder_token])
-    if @pilot.nil?
+    if !@pilot
       render status: 404
     end
 
