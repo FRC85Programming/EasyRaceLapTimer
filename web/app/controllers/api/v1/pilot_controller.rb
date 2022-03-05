@@ -40,10 +40,7 @@ class Api::V1::PilotController < Api::V1Controller
     end
 
     @pilot.update_attribute(:transponder_token, "")
-    if @pilot.save
-      render text: "Success", status: 200
-    else
-      render text: "Not saved", status: 500
-    end
+    @pilot.save
+    render text: "Success", status: 200
   end
 end
