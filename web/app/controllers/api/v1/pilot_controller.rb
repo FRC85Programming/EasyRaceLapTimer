@@ -43,7 +43,7 @@ class Api::V1::PilotController < Api::V1Controller
     if @pilot.save
       render text: "Success", status: 200
     else
-      render nothing: true, status: :bad_request
+      render text: "Not saved", status: 500
     end
   end
 end
