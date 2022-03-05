@@ -26,4 +26,14 @@ class Api::V1::PilotController < Api::V1Controller
       render status: 400, text: ex.message
     end
   end
+
+  def deactivate_token
+    @pilot = Pilot.find(transponder_token: params[:transponder_token])
+    @pilot.update_attribute(:transponder_token, "")
+    if @pilot.save
+      render json: @pilot
+    else
+      render nothing: true, status: :bad_request
+    end
+  end
 end
