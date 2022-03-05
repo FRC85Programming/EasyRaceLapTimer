@@ -27,7 +27,7 @@ class Api::V1::PilotController < Api::V1Controller
     end
   end
 
-  def deactivate_token
+  def deactivate
     @pilot = Pilot.find(transponder_token: params[:transponder_token])
     @pilot.update_attribute(:transponder_token, "")
     if @pilot.save
