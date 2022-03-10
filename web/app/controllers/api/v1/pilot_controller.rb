@@ -10,6 +10,11 @@ class Api::V1::PilotController < Api::V1Controller
 
   def show
     @pilot = Pilot.find_by(transponder_token: params[:transponder_token])
+    if !@pilot
+      render json: @pilot, status: 404
+      return
+    end
+
     render json: @pilot
   end
 
@@ -25,5 +30,17 @@ class Api::V1::PilotController < Api::V1Controller
     rescue Exception => ex
       render status: 400, text: ex.message
     end
+  end
+
+  def deactivate
+    @pilot = Pilot.find_by(transponder_token: params[:transponder_token])
+    if !@pilot
+      render json: @pilot, status: 404
+      return
+    end
+
+    @pilot.update_attribute(:transponder_token, "")
+    @pilot.save
+    render text: "Success", status: 200
   end
 end
