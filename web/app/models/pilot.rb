@@ -5,6 +5,8 @@ class Pilot < ActiveRecord::Base
   acts_as_paranoid
   mount_uploader :image, PilotImageUploader
 
+  scope :registered, -> {where.not(transponder_token: [nil, ''])}
+
   def total_races
     return self.pilot_race_laps.group(:race_session_id).count.count
   end
