@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502142410) do
+ActiveRecord::Schema.define(version: 20220310224734) do
 
   create_table "config_values", force: :cascade do |t|
     t.string "name"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20160502142410) do
     t.datetime "deleted_at"
     t.boolean  "latest"
     t.boolean  "invalidated",     default: false
+    t.boolean  "isManual"
   end
 
   add_index "pilot_race_laps", ["deleted_at"], name: "index_pilot_race_laps_on_deleted_at"

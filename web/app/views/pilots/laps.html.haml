@@ -22,6 +22,7 @@
       %th Event
       %th Lap Number
       %th Lap Time
+      %th Manual Entry
       %th
 
   %tbody
@@ -39,6 +40,9 @@
         %td
           %strong
             = formated_lap_time(lap_entry.lap_time)
+        %td
+          %strong
+            = check_box_tag :isManual, "1", lap_entry.isManual, disabled: true
         %td
           %strong
             = link_to_if(lap_entry.invalidated?, t('actions.undo_invalidate_lap'),{action: 'undo_invalidate_lap', controller: '/race_director', lapid:lap_entry.id},{class: 'btn btn-danger btn-large'}) do
