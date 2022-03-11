@@ -72,8 +72,8 @@ class RaceSessionAdapter
         data['avg_lap_time'] = self.race_session.avg_lap_time_of_pilot(c_pilot)
 
         data['fastest_lap'] = Hash.new
-        data['fastest_lap']['lap_num'] = self.race_session.fastest_lap_of_pilot(c_pilot).lap_num
-        data['fastest_lap']['lap_time'] = self.race_session.fastest_lap_of_pilot(c_pilot).lap_time
+        data['fastest_lap']['lap_num'] = self.race_session.fastest_lap_of_pilot(c_pilot)&.lap_num
+        data['fastest_lap']['lap_time'] = self.race_session.fastest_lap_of_pilot(c_pilot)&.lap_time
 
         data['last_lap'] = Hash.new
         data['last_lap']['lap_num'] = self.race_session.last_lap_of_pilot(c_pilot).lap_num

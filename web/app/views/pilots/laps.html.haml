@@ -6,7 +6,7 @@
   .col-md-3
     .row
       .col-xs-6.col-md-3
-        - if @pilot.image
+        - if @pilot.image.present?
           = image_tag(@pilot.image.url,class: 'thumbnail',width: 173, height: 173)
   .col-md-6
     %h1
@@ -14,6 +14,9 @@
     .small
       %strong
         = @pilot.quad
+    .small
+      %strong
+        =  link_to(t('actions.add_manual_lap'),{action: 'add_manual_lap', controller: '/race_director', pilotid: @pilot.id},)
 
 %table.table.table-striped
   %thead
