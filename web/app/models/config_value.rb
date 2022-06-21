@@ -32,4 +32,13 @@ class ConfigValue < ActiveRecord::Base
         return create_if_not_exist.value.downcase == "true"
       end
     end
+
+    def self.site_name
+      create_if_not_exist = get_value("site_name")
+      if create_if_not_exist.nil?
+        ConfigValue.create(name: "site_name", value: "BOB Tracker")
+      end
+
+      return get_value("site_name").value
+    end
 end
