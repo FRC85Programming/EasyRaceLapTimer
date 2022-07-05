@@ -6,7 +6,7 @@ this setup is based on Raspian JESSIE
 
 ## development requirements (wsl Ubuntu/Debian)
     cd /path/to/EasyRaceLapTimer/web
-    sudo apt-get install ruby-dev libssl-dev libapr1-dev redis-server libaprutil1-dev imagemagick wkhtmltopdf redis-server libsqlite3-dev
+    sudo apt-get install build-essential ruby-dev libssl-dev libapr1-dev libaprutil1-dev imagemagick wkhtmltopdf redis-server libsqlite3-dev nodejs
     sudo gem install bundler
     bundle
     rake db:create
