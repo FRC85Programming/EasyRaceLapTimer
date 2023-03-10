@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   get '/history/show/:id' =>  'history#show'
   get '/history/pdf_body/:id' =>  'history#pdf_body'
   get '/history/pdf/:id.:format' => 'history#pdf'
+  get '/history/pdf_by_team/:id' => 'history#pdf_by_team'
   get '/history/xlsx/:id' => 'history#export_to_xlsx'
   delete '/history/delete/:id' =>  'history#delete'
 
