@@ -1,0 +1,27 @@
+.table-responsive
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th
+          Team
+        %th
+          Participant
+        %th
+          Laps
+        %th
+          Avg Lap Time
+    %tbody
+      - race_session_adapter.listing_simple_mode.each do |entry|
+        %tr
+          %td
+            %strong
+              = entry['team']
+          %td
+            %strong
+              = entry['name']
+          %td
+            %strong
+              = entry['lap_count']
+          %td
+            %strong
+              = formated_lap_time(entry['avg_lap_time'])

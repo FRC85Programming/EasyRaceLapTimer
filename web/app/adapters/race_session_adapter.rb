@@ -59,6 +59,24 @@ class RaceSessionAdapter
     end
   end
 
+  def listing_simple_mode
+    listing_data = Array.new
+
+    self.race_session.pilot_race_laps_valid.group(:pilot_id).pluck(:pilot_id).each do |pilot_id|
+      c_pilot = Pilot.where(id: pilot_id).first
+      if c_pilot
+        data = Hash.new
+        data['team'] = c_pilot.team
+        data['name'] = c_pilot.name
+        data['lap_count'] = self.race_session.lap_count_of_pilot(c_pilot)
+
+        listing_data << data
+      end
+    end
+
+    return listing_data
+  end
+
   def listing_standard_mode
     listing_data = Array.new
 
