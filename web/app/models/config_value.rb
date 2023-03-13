@@ -41,4 +41,13 @@ class ConfigValue < ActiveRecord::Base
 
       return get_value("site_name").value
     end
+
+    def self.laps_to_miles_ratio
+      create_if_not_exist = get_value("laps_to_miles_ratio")
+      if create_if_not_exist.nil?
+        ConfigValue.create(name: "laps_to_miles_ratio", value: "0.2")
+      end
+
+      return get_value("laps_to_miles_ratio").value.to_f
+    end
 end
