@@ -232,13 +232,15 @@ class RaceSessionAdapter
       end
     end
 
-    # check if the lap tracking was too fast
     if is_retry
-      existing = self.race_session.pilot_race_laps.where(pilot_id: pilot.id, lap_time: delta_time_in_ms)
+      low = delta_time_in_ms.to_i - 2
+      high = low + 4
+      existing = self.race_session.pilot_race_laps.where("pilot_id = :pilotId AND lap_time >= :low AND lap_time <= :high", pilotId: pilot.id, low: low, high: high )
       if existing.any?
         raise Exception, "Lap for pilot id '#{pilot.id}' with time '#{delta_time_in_ms}' already exists."
       end
     else
+      # check if the lap tracking was too fast
       last_track = self.race_session.pilot_race_laps.where(pilot_id: pilot.id).order("ID DESC").first
       if last_track && last_track.created_at + ConfigValue::get_value("time_between_lap_track_requests_in_seconds").value.to_i.seconds > Time.now
         raise Exception, 'request successfull but tracking was too fast concerning the last track'
