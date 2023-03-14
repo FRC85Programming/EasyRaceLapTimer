@@ -233,9 +233,9 @@ class RaceSessionAdapter
     end
 
     if is_retry
-      low = delta_time_in_ms.to_i - 2
-      high = low + 4
-      existing = self.race_session.pilot_race_laps.where("pilot_id = :pilotId AND lap_time >= :low AND lap_time <= :high", pilotId: pilot.id, low: low, high: high )
+      low = delta_time_in_ms.to_i - 4
+      high = low + 8
+      existing = self.race_session.pilot_race_laps_valid.where("pilot_id = :pilotId AND lap_time >= :low AND lap_time <= :high", pilotId: pilot.id, low: low, high: high )
       if existing.any?
         raise Exception, "Lap for pilot id '#{pilot.id}' with time '#{delta_time_in_ms}' already exists."
       end
