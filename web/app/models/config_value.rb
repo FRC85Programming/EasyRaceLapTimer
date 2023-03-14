@@ -50,4 +50,14 @@ class ConfigValue < ActiveRecord::Base
 
       return get_value("laps_to_miles_ratio").value.to_f
     end
+
+    def self.track_latest_lap
+      x = get_value("track_latest_lap")
+      if x.nil?
+        ConfigValue.create(name: "track_latest_lap", value: "true")
+        return true
+      else
+        return x.value.downcase == "true"
+      end
+    end
 end
