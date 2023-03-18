@@ -54,7 +54,7 @@ class SystemController < ApplicationController
   end
 
   def strong_params_race_session
-    params.require(:race_session).permit(:title,:idle_time_in_seconds)
+    params.require(:race_session).permit(:title, :idle_time_in_seconds, :season_id)
   end
 
   def strong_params_style_settings

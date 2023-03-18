@@ -39,8 +39,8 @@
               = form_for(@race_session_prototype,url: {action: 'start_race_session',controller: '/system'},html: {class: 'form-inline'}) do |f|
                 .form-group
                   %label{:for => "exampleInputName2"}
-                    = t('season.name')
-                  = f.collection_select(:season_id, Season.all, :id, :name, {include_blank: true}, {class: 'form-control'})
+                    Season 
+                  = f.collection_select(:season_id, Season.all, :id, :name, {:selected => Season.last&.id}, {class: 'form-control'})
                 .form-group
                   %label{:for => "exampleInputName2"}
                     = t('race_session.title')
