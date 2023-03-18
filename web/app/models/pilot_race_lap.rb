@@ -36,6 +36,10 @@ class PilotRaceLap < ActiveRecord::Base
   end
 
   def filter_mark_latest
+    if !ConfigValue.track_latest_lap
+      return
+    end
+
     RaceSession.find(self.race_session_id).pilot_race_laps.each do |l|
       l.update_attribute(:latest,false)
     end
