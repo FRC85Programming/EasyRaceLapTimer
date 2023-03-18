@@ -44,7 +44,7 @@ class System::PilotController < SystemController
   end
 
   def strong_params_pilot
-    params.require(:pilot).permit(:name,:transponder_token,:image,:quad,:team)
+    params.require(:pilot).permit(:name,:transponder_token,:external_id,:image,:quad,:team)
   end
 
   def export

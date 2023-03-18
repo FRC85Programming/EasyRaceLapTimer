@@ -59,6 +59,24 @@ class RaceSessionAdapter
     end
   end
 
+  def listing_simple_mode
+    listing_data = Array.new
+
+    self.race_session.pilot_race_laps_valid.group(:pilot_id).pluck(:pilot_id).each do |pilot_id|
+      c_pilot = Pilot.where(id: pilot_id).first
+      if c_pilot
+        data = Hash.new
+        data['team'] = c_pilot.team
+        data['name'] = c_pilot.name
+        data['lap_count'] = self.race_session.lap_count_of_pilot(c_pilot)
+
+        listing_data << data
+      end
+    end
+
+    return listing_data
+  end
+
   def listing_standard_mode
     listing_data = Array.new
 
@@ -156,9 +174,9 @@ class RaceSessionAdapter
     return listing_data
   end
 
-  def track_lap_time(transponder_token,delta_time_in_ms)
+  def track_lap_time(transponder_token, delta_time_in_ms, is_retry)
     if self.race_session.mode == "standard"
-      res = self.track_lap_time_standard_mode(transponder_token,delta_time_in_ms, ConfigValue.create_pilot_if_not_exist)
+      res = self.track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry, ConfigValue.create_pilot_if_not_exist)
       if ConfigValue.enable_sound
         RaceSessionEventAdapter.new(self,transponder_token).perform
       end
@@ -202,7 +220,7 @@ class RaceSessionAdapter
   end
 
   # tracking a lap in standard mode
-  def track_lap_time_standard_mode(transponder_token,delta_time_in_ms,create_if_not_exist = false)
+  def track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry = false, create_if_not_exist = false)
     pilot = Pilot.where(transponder_token: transponder_token).first
     if !pilot
       if create_if_not_exist
@@ -214,10 +232,19 @@ class RaceSessionAdapter
       end
     end
 
-    # check if the lap tracking was too fast
-    last_track = self.race_session.pilot_race_laps.where(pilot_id: pilot.id).order("ID DESC").first
-    if last_track && last_track.created_at + ConfigValue::get_value("time_between_lap_track_requests_in_seconds").value.to_i.seconds > Time.now
-      raise Exception, 'request successfull but tracking was too fast concering the last track'
+    if is_retry
+      low = delta_time_in_ms.to_i - 4
+      high = low + 8
+      existing = self.race_session.pilot_race_laps_valid.where("pilot_id = :pilotId AND lap_time >= :low AND lap_time <= :high", pilotId: pilot.id, low: low, high: high )
+      if existing.any?
+        raise Exception, "Lap for pilot id '#{pilot.id}' with time '#{delta_time_in_ms}' already exists."
+      end
+    else
+      # check if the lap tracking was too fast
+      last_track = self.race_session.pilot_race_laps.where(pilot_id: pilot.id).order("ID DESC").first
+      if last_track && last_track.created_at + ConfigValue::get_value("time_between_lap_track_requests_in_seconds").value.to_i.seconds > Time.now
+        raise Exception, 'request successfull but tracking was too fast concerning the last track'
+      end
     end
 
     pilot_race_lap = self.race_session.add_lap(pilot,delta_time_in_ms)

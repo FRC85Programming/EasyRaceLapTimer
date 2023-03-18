@@ -20,12 +20,29 @@ class Api::V1::PilotController < Api::V1Controller
 
   def create
     begin
-      @pilot = Pilot.new
-      @pilot.assign_attributes(JSON.parse(request.raw_post))
-      if @pilot.save
-        render json: @pilot
+      incoming = JSON.parse(request.raw_post)
+      if incoming.has_key?("external_id")
+        existing = Pilot.find_by(external_id: incoming['external_id'])
+      end
+
+      if existing
+        logger.info "Existing found"
+        existing.update_attributes(incoming)
+        if existing.save
+          render json: existing
+        else
+          render nothing: true, status: :bad_request
+        end
       else
-        render nothing: true, status: :bad_request
+        logger.info "Creating new"
+        @pilot = Pilot.new
+
+        @pilot.assign_attributes(incoming)
+        if @pilot.save
+          render json: @pilot
+        else
+          render nothing: true, status: :bad_request
+        end
       end
     rescue Exception => ex
       render status: 400, text: ex.message

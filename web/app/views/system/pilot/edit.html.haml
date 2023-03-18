@@ -16,6 +16,10 @@
     %label{:for => "exampleInputEmail2"}
       = t('pilot.transponder_token')
     = f.text_field(:transponder_token, placeholder: "XXXXXX", class: 'form-control', required: true)
+  .form-group 
+    %label{:for => "exampleInputEmail2"}
+      = t('pilot.external_id')
+    = f.text_field(:external_id, placeholder: "", class: 'form-control', required: false)
   .form-group
     %label{:for => "exampleInputEmail2"}
       = t('pilot.quad')
