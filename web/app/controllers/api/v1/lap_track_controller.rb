@@ -1,8 +1,11 @@
 require 'socket'
 class Api::V1::LapTrackController < Api::V1Controller
   def create
-
-    @race_session =  RaceSession::get_open_session
+    if params[:session].blank?
+      @race_session =  RaceSession::get_open_session
+    else
+      @race_session = RaceSession.find(params[:session])
+    end
 
     if !@race_session # maybe the last one was one with  defined idle time... => autostart
       @race_session = RaceSession::get_session_from_previous
