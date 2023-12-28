@@ -78,6 +78,7 @@ Rails.application.routes.draw do
   post 'api/v1/pilot' => 'api/v1/pilot#create'
   get 'api/v1/pilot/:transponder_token/deactivate' => 'api/v1/pilot#deactivate'
   post 'api/v1/pilot/:transponder_token/deactivate' => 'api/v1/pilot#deactivate'
+  get 'api/v1/pilot/id/:external_id' => 'api/v1/pilot#by_id'
 
   post 'api/v1/lap_track' => 'api/v1/lap_track#create'
   post 'api/v1/satellite' => 'api/v1/satellite#create'

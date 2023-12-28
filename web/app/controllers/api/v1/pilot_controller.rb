@@ -18,6 +18,16 @@ class Api::V1::PilotController < Api::V1Controller
     render json: @pilot
   end
 
+  def by_id
+    @pilot = Pilot.find_by(external_id: [params[:external_id]])
+    if !@pilot
+      render json: @pilot, status: 404
+      return
+    end
+
+    render json: @pilot
+  end
+
   def create
     begin
       incoming = JSON.parse(request.raw_post)
@@ -27,9 +37,10 @@ class Api::V1::PilotController < Api::V1Controller
 
       if existing
         logger.info "Existing found"
-        existing.update_attributes(incoming)
+        changed = incoming.reject {|k, v| v.blank?}
+        existing.update_attributes(changed)
         if existing.save
-          render json: existing
+          render json: existing, status: 204
         else
           render nothing: true, status: :bad_request
         end
@@ -39,7 +50,7 @@ class Api::V1::PilotController < Api::V1Controller
 
         @pilot.assign_attributes(incoming)
         if @pilot.save
-          render json: @pilot
+          render json: @pilot, status: 201
         else
           render nothing: true, status: :bad_request
         end
