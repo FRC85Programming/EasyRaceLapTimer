@@ -31,7 +31,7 @@ class Api::V1::PilotController < Api::V1Controller
   def create
     begin
       incoming = JSON.parse(request.raw_post)
-      if incoming.has_key?("external_id")
+      if incoming.has_key?("external_id") && !incoming['external_id'].empty?
         existing = Pilot.find_by(external_id: incoming['external_id'])
       end
 
