@@ -72,6 +72,8 @@ Rails.application.routes.draw do
   get '/history/xlsx/:id' => 'history#export_to_xlsx'
   delete '/history/delete/:id' =>  'history#delete'
 
+  get '/seasons/:name' => 'seasons#show'
+
   ########### API
   get 'api/v1/pilot' => 'api/v1/pilot#index'
   get 'api/v1/pilot/:transponder_token' => 'api/v1/pilot#show'

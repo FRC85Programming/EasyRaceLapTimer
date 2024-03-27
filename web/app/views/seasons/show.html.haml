@@ -1,0 +1,22 @@
+%h1
+  = @season.name
+.table-responsive
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %td Name
+        - @season.race_session.each do |s|
+          %td
+            = s.title
+    %tbody
+      - Pilot.all.each do |p|
+        %tr
+          %td.column-header 
+            = p.name
+          - @season.race_session.each do |s|
+            - intersect_pilots = s.pilot_race_laps.where(pilot: p)
+            - if intersect_pilots.empty?
+              %td
+            - else
+              %td
+                = intersect_pilots.count
