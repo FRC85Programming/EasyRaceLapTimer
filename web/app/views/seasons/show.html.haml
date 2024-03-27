@@ -4,14 +4,17 @@
   %table.table.table-striped.table-condensed
     %thead
       %tr
+        %td Team
         %td Name
         - @season.race_session.each do |s|
           %td
             = s.title
     %tbody
-      - Pilot.all.each do |p|
+      - Pilot.where.not(team: [nil, ""]).order(:team).each do |p|
         %tr
-          %td.column-header 
+          %td.column-header
+            = p.team
+          %td
             = p.name
           - @season.race_session.each do |s|
             - intersect_pilots = s.pilot_race_laps.where(pilot: p)

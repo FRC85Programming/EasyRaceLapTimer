@@ -24,7 +24,6 @@ class Pilot < ActiveRecord::Base
     end
     return laps
   end
-    
 
   def self.to_csv
     attributes = %w{transponder_token name team}
