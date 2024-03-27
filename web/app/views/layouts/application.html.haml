@@ -43,7 +43,9 @@
                       =link_to('Soundeffects',{action: 'index',controller: '/system/soundfile'})
               %li
                 =link_to('Monitor',{action: 'index',controller: '/monitor'})
-
+              - if Season.last
+                %li
+                  = link_to(Season.last.name, {action: 'show', controller: '/seasons', name: Season.last.name})
               - if current_user.has_role?(:admin) || current_user.has_role?(:principal) 
                 %li
                   =link_to('Classes',{action: 'index', controller: '/principal'})
