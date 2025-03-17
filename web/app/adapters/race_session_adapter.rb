@@ -232,6 +232,13 @@ class RaceSessionAdapter
       end
     end
 
+    if !lap_id.nil?
+      existing = PilotRaceLap.where(lap_id: lap_id).first
+      if !existing.nil?
+        raise Exception, "Lap with id '#{lap_id}' already exists."
+      end
+    end
+
     if is_retry
       low = delta_time_in_ms.to_i - 4
       high = low + 8
