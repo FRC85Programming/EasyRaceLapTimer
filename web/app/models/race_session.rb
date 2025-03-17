@@ -62,11 +62,11 @@ class RaceSession < ActiveRecord::Base
     ::IRDaemonCmd::send("RESET#\n")
   end
 
-  def add_lap(pilot,lap_time)
-
+  def add_lap(pilot, lap_time, lap_id = nil)
     pilot_race_lap = PilotRaceLap.new(pilot_id: pilot.id,race_session_id: self.id)
     pilot_race_lap.lap_time = lap_time
     pilot_race_lap.lap_num = PilotRaceLap.where(pilot_id: pilot.id,race_session_id: self.id).count + 1
+    pilot_race_lap.lap_id = lap_id
     pilot_race_lap.save
     return pilot_race_lap
   end

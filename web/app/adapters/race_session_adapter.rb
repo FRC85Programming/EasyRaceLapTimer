@@ -174,9 +174,9 @@ class RaceSessionAdapter
     return listing_data
   end
 
-  def track_lap_time(transponder_token, delta_time_in_ms, is_retry)
+  def track_lap_time(transponder_token, delta_time_in_ms, is_retry, lap_id)
     if self.race_session.mode == "standard"
-      res = self.track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry, ConfigValue.create_pilot_if_not_exist)
+      res = self.track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry, ConfigValue.create_pilot_if_not_exist, lap_id)
       if ConfigValue.enable_sound
         RaceSessionEventAdapter.new(self,transponder_token).perform
       end
@@ -220,7 +220,7 @@ class RaceSessionAdapter
   end
 
   # tracking a lap in standard mode
-  def track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry = false, create_if_not_exist = false)
+  def track_lap_time_standard_mode(transponder_token, delta_time_in_ms, is_retry = false, create_if_not_exist = false, lap_id = nil)
     pilot = Pilot.where(transponder_token: transponder_token).first
     if !pilot
       if create_if_not_exist
@@ -247,7 +247,7 @@ class RaceSessionAdapter
       end
     end
 
-    pilot_race_lap = self.race_session.add_lap(pilot,delta_time_in_ms)
+    pilot_race_lap = self.race_session.add_lap(pilot, delta_time_in_ms, lap_id)
     if ConfigValue.enable_sound
       SoundFileWorker.perform_async("sfx_lap_beep")
     end
