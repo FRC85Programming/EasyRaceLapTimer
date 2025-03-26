@@ -27,7 +27,7 @@ class Api::V1::LapTrackController < Api::V1Controller
 
     # min lap time
     min_t = ConfigValue::get_value("lap_min_lap_time_in_seconds").value.to_f * 1000.0
-    if params[:lap_time_in_ms].to_f < min_t
+    if params[:lap_time_in_ms].to_f < min_t && params[:lap_time_in_ms].to_f > 0.0
       render status: 403, text: "NOT TRACKED: request successfull but lap time was less than min lap time: #{min_t} t: #{params[:lap_time_in_ms].to_f}"
       return
     end
