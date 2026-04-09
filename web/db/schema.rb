@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20250317000853) do
+ActiveRecord::Schema.define(version: 20260409222804) do
 
   create_table "config_values", force: :cascade do |t|
     t.string "name"
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 20250317000853) do
     t.boolean  "hot_seat_enabled",           default: false
     t.integer  "idle_time_in_seconds",       default: 0
     t.integer  "season_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "race_sessions", ["deleted_at"], name: "index_race_sessions_on_deleted_at"
