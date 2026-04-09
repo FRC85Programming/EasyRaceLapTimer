@@ -49,6 +49,14 @@
                   %label{:for => "exampleInputName2"}
                     = t('race_session.idle_time_in_seconds')
                   = f.text_field(:idle_time_in_seconds, placeholder: "60", class: 'form-control', required: true)
+                .form-group
+                  %label{:for => "exampleInputName2"}
+                    = t('race_session.start_date')
+                  = f.date_field(:start_date, class: 'form-control', required: false)
+                .form-group
+                  %label{:for => "exampleInputName2"}
+                    = t('race_session.end_date')
+                  = f.date_field(:end_date, class: 'form-control', required: false)
                 %button.btn.btn-success{:type => "submit"}
                   = t('actions.start_standard_race_session')
 .row

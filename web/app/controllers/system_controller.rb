@@ -9,7 +9,18 @@ class SystemController < ApplicationController
   def start_race_session
     if !RaceSession::get_open_session
       @race_session = RaceSession.new(strong_params_race_session)
-      @race_session.active = true
+      if !@race_session.start_date.nil?
+        @race_session.start_date = @race_session.start_date.midnight
+      end
+
+      if !@race_session.end_date.nil?
+        @race_session.end_date = @race_session.end_date.end_of_day
+      end
+
+      if @race_session.start_date.nil? || @race_session.start_date < DateTime.current
+        @race_session.active = true
+      end
+
       @race_session.save
       if ConfigValue.enable_sound
         SoundFileWorker.perform_async("sfx_start_race")
@@ -54,7 +65,7 @@ class SystemController < ApplicationController
   end
 
   def strong_params_race_session
-    params.require(:race_session).permit(:title, :idle_time_in_seconds, :season_id)
+    params.require(:race_session).permit(:title, :idle_time_in_seconds, :season_id, :start_date, :end_date)
   end
 
   def strong_params_style_settings

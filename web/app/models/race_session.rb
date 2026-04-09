@@ -10,12 +10,12 @@ class RaceSession < ActiveRecord::Base
   def self.get_open_session
     active = RaceSession.where(active: true).first
     if active.nil?
-      active = RaceSession.where("start_date <= ? AND end_date >= ?", DateTime.current, DateTime.current).first
+      active = RaceSession.where("active IS NULL AND start_date <= ? AND end_date >= ?", DateTime.current, DateTime.current).first
       if !active.nil?
         active.active = true
         active.save
       end
-    elsif active.end_date < DateTime.current
+    elsif !active.end_date.nil? && active.end_date < DateTime.current
       active.active = false
       active.save
     end
