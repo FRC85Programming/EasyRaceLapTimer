@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20260409222804) do
+ActiveRecord::Schema.define(version: 20260419202255) do
 
   create_table "config_values", force: :cascade do |t|
     t.string "name"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20260409222804) do
   add_index "pilot_race_laps", ["lap_num"], name: "index_pilot_race_laps_on_lap_num"
   add_index "pilot_race_laps", ["lap_time"], name: "index_pilot_race_laps_on_lap_time"
   add_index "pilot_race_laps", ["pilot_id"], name: "index_pilot_race_laps_on_pilot_id"
+  add_index "pilot_race_laps", ["race_session_id", "latest", "invalidated"], name: "idx_prl_session_active"
+  add_index "pilot_race_laps", ["race_session_id", "pilot_id"], name: "idx_prl_session_pilot"
+  add_index "pilot_race_laps", ["race_session_id"], name: "idx_prl_race_session"
 
   create_table "pilots", force: :cascade do |t|
     t.string   "name"
