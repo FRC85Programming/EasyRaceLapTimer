@@ -3,6 +3,7 @@ class HistoryController < ApplicationController
   before_action :filter_needs_admin_role, only: [:delete]
 
   def index
+    RaceSession.get_open_session
     @race_sessions = RaceSession.where(active: false).order("id DESC")
   end
 

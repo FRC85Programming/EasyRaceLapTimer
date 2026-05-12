@@ -8,7 +8,19 @@ class RaceSession < ActiveRecord::Base
   after_create :filter_reset_ir_daemon
 
   def self.get_open_session
-    return  RaceSession.where(active: true).first
+    active = RaceSession.where(active: true).first
+    if active.nil?
+      active = RaceSession.where("active IS NULL AND start_date <= ? AND end_date >= ?", DateTime.current, DateTime.current).first
+      if !active.nil?
+        active.active = true
+        active.save
+      end
+    elsif !active.end_date.nil? && active.end_date < DateTime.current
+      active.active = false
+      active.save
+    end
+
+    return active
   end
 
   def self.get_session_from_previous
